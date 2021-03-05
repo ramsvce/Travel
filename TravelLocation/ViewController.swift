@@ -47,7 +47,7 @@ class ViewController: UIViewController ,UITableViewDelegate , UITableViewDataSou
         
         BackgroundLocationManager.instance.delegate = self
        
-        initializeLocation()
+//        initializeLocation()
         
         tableview.delegate = self
         tableview.dataSource = self
