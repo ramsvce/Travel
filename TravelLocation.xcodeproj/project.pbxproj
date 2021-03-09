@@ -10,6 +10,9 @@
 		70A72BE525F1636700E0B942 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A72BE425F1636700E0B942 /* LocationViewModel.swift */; };
 		70A72BE725F1665F00E0B942 /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A72BE625F1665F00E0B942 /* LocationTableViewCell.swift */; };
 		70A72BE925F16DA000E0B942 /* LocationHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A72BE825F16DA000E0B942 /* LocationHelpers.swift */; };
+		70B766B725F7FA76008B60F6 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B766B625F7FA76008B60F6 /* DateFormat.swift */; };
+		70B766BB25F7FAB4008B60F6 /* LocationTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B766BA25F7FAB4008B60F6 /* LocationTableView.swift */; };
+		70B766BD25F7FB4C008B60F6 /* LocationVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B766BC25F7FB4C008B60F6 /* LocationVM.swift */; };
 		70F876B825F0E45400B92035 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F876B725F0E45400B92035 /* AppDelegate.swift */; };
 		70F876BA25F0E45400B92035 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F876B925F0E45400B92035 /* ViewController.swift */; };
 		70F876BD25F0E45400B92035 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70F876BB25F0E45400B92035 /* Main.storyboard */; };
@@ -25,6 +28,9 @@
 		70A72BE425F1636700E0B942 /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		70A72BE625F1665F00E0B942 /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
 		70A72BE825F16DA000E0B942 /* LocationHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHelpers.swift; sourceTree = "<group>"; };
+		70B766B625F7FA76008B60F6 /* DateFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
+		70B766BA25F7FAB4008B60F6 /* LocationTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationTableView.swift; sourceTree = "<group>"; };
+		70B766BC25F7FB4C008B60F6 /* LocationVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationVM.swift; sourceTree = "<group>"; };
 		70F876B425F0E45300B92035 /* TravelLocation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelLocation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70F876B725F0E45400B92035 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		70F876B925F0E45400B92035 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -49,11 +55,69 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		70F876AB25F0E45300B92035 = {
+		70B766AF25F7F98A008B60F6 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				70B766B625F7FA76008B60F6 /* DateFormat.swift */,
+				70F876D025F10B5900B92035 /* BackgroundLocationManager.swift */,
+				70A72BE825F16DA000E0B942 /* LocationHelpers.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		70B766B025F7F9C1008B60F6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				70A72BE625F1665F00E0B942 /* LocationTableViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		70B766B125F7F9CA008B60F6 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				70A72BE425F1636700E0B942 /* LocationViewModel.swift */,
+				70B766BC25F7FB4C008B60F6 /* LocationVM.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		70B766B225F7F9DA008B60F6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				70F876CC25F0EA1E00B92035 /* Location+CoreDataClass.swift */,
 				70F876CD25F0EA1E00B92035 /* Location+CoreDataProperties.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		70B766B325F7F9E5008B60F6 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				70F876B925F0E45400B92035 /* ViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		70B766B425F7F9F3008B60F6 /* Appdelegate */ = {
+			isa = PBXGroup;
+			children = (
+				70F876B725F0E45400B92035 /* AppDelegate.swift */,
+			);
+			path = Appdelegate;
+			sourceTree = "<group>";
+		};
+		70B766B525F7FA05008B60F6 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				70B766BA25F7FAB4008B60F6 /* LocationTableView.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		70F876AB25F0E45300B92035 = {
+			isa = PBXGroup;
+			children = (
 				70F876B625F0E45300B92035 /* TravelLocation */,
 				70F876B525F0E45300B92035 /* Products */,
 			);
@@ -70,17 +134,18 @@
 		70F876B625F0E45300B92035 /* TravelLocation */ = {
 			isa = PBXGroup;
 			children = (
-				70F876B725F0E45400B92035 /* AppDelegate.swift */,
-				70F876B925F0E45400B92035 /* ViewController.swift */,
+				70B766B525F7FA05008B60F6 /* DataSource */,
+				70B766B425F7F9F3008B60F6 /* Appdelegate */,
+				70B766B325F7F9E5008B60F6 /* ViewControllers */,
+				70B766B225F7F9DA008B60F6 /* Models */,
+				70B766B125F7F9CA008B60F6 /* ViewModels */,
+				70B766B025F7F9C1008B60F6 /* Views */,
+				70B766AF25F7F98A008B60F6 /* Helpers */,
 				70F876BB25F0E45400B92035 /* Main.storyboard */,
 				70F876C125F0E45400B92035 /* Assets.xcassets */,
 				70F876C325F0E45400B92035 /* LaunchScreen.storyboard */,
 				70F876C625F0E45400B92035 /* Info.plist */,
 				70F876BE25F0E45400B92035 /* TravelLocation.xcdatamodeld */,
-				70F876D025F10B5900B92035 /* BackgroundLocationManager.swift */,
-				70A72BE425F1636700E0B942 /* LocationViewModel.swift */,
-				70A72BE625F1665F00E0B942 /* LocationTableViewCell.swift */,
-				70A72BE825F16DA000E0B942 /* LocationHelpers.swift */,
 			);
 			path = TravelLocation;
 			sourceTree = "<group>";
@@ -170,7 +235,10 @@
 				70F876C025F0E45400B92035 /* TravelLocation.xcdatamodeld in Sources */,
 				70F876B825F0E45400B92035 /* AppDelegate.swift in Sources */,
 				70F876CF25F0EA1E00B92035 /* Location+CoreDataProperties.swift in Sources */,
+				70B766BB25F7FAB4008B60F6 /* LocationTableView.swift in Sources */,
+				70B766B725F7FA76008B60F6 /* DateFormat.swift in Sources */,
 				70A72BE525F1636700E0B942 /* LocationViewModel.swift in Sources */,
+				70B766BD25F7FB4C008B60F6 /* LocationVM.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

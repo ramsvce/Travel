@@ -15,11 +15,11 @@ protocol AddLocationDelegate : AnyObject {
     func addLocation(sender : BackgroundLocationManager)
 }
 
-class BackgroundLocationManager :NSObject, CLLocationManagerDelegate {
+class BackgroundLocationManager :NSObject {
     
     static let instance = BackgroundLocationManager()
-    static let BACKGROUND_TIMER = 200.0 // restart location manager every 150 seconds
-    static let UPDATE_SERVER_INTERVAL = 60 * 10 // 1 hour - once every 1 hour send location to server
+    static let BACKGROUND_TIMER = 30.0 // restart location manager every 30 seconds
+    static let UPDATE_SERVER_INTERVAL = 25 // 25 seconds - once every 25 seconds send location to server
     
     let locationManager = CLLocationManager()
     var timer:Timer?
@@ -39,13 +39,7 @@ class BackgroundLocationManager :NSObject, CLLocationManagerDelegate {
         if #available(iOS 9, *){
             locationManager.allowsBackgroundLocationUpdates = true
         }
-        
-         if UIApplication.shared.applicationState == .active {
-             print("AAAAActive")
-         }else{
-            
-              NotificationCenter.default.addObserver(self, selector: #selector(self.applicationEnterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(self.applicationEnterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
     }
     
     @objc func applicationEnterBackground(){
@@ -87,6 +81,56 @@ class BackgroundLocationManager :NSObject, CLLocationManagerDelegate {
     }
     
     
+    func isItTime(now:Date) -> Bool {
+        let timePast = now.timeIntervalSince(lastLocationDate as Date)
+        let intervalExceeded = Int(timePast) > BackgroundLocationManager.UPDATE_SERVER_INTERVAL
+        return intervalExceeded;
+    }
+    
+    fileprivate var str : String?
+    
+    func sendLocationToServer(location:CLLocation, now:Date){
+        //TODO
+        
+        self.str = ""
+        
+        convertLatLongToAddress1(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude) { [weak self] locationName in
+            self?.str  = locationName!
+            
+            LocationHelpers().addLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, place: locationName!, timestamp: now)
+            
+            if UIApplication.shared.applicationState == .inactive{
+                print("Suspended")
+                self?.stop()
+            }else{
+                print("Active/Background")
+                self?.delegate?.addLocation(sender: self!)
+            }
+            
+        }
+        
+    }
+    
+    
+    
+    func beginNewBackgroundTask(){
+        var previousTaskId = currentBgTaskId;
+        
+        currentBgTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: {
+        })
+        if let taskId = previousTaskId{
+            UIApplication.shared.endBackgroundTask(taskId)
+            previousTaskId = UIBackgroundTaskInvalid
+        }
+        timer = Timer.scheduledTimer(timeInterval: BackgroundLocationManager.BACKGROUND_TIMER, target: self, selector: #selector(self.restart), userInfo: nil, repeats: false)
+        
+        print(BackgroundLocationManager.BACKGROUND_TIMER)
+        
+    }
+}
+
+extension BackgroundLocationManager : CLLocationManagerDelegate {
+    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case CLAuthorizationStatus.restricted: break
@@ -121,43 +165,10 @@ class BackgroundLocationManager :NSObject, CLLocationManagerDelegate {
     }
     
     
-    func isItTime(now:Date) -> Bool {
-        let timePast = now.timeIntervalSince(lastLocationDate as Date)
-        let intervalExceeded = Int(timePast) > BackgroundLocationManager.UPDATE_SERVER_INTERVAL
-        return intervalExceeded;
-    }
-    
-    fileprivate var str : String?
-    
-    func sendLocationToServer(location:CLLocation, now:Date){
-        //TODO
-        
-        self.str = ""
-
-        convertLatLongToAddress1(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude) { [weak self] locationName in
-            self?.str  = locationName!
-            
-            print("New address is \(String(describing: self?.str))")
-            
-            LocationHelpers().addLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, place: locationName!, timestamp: now)
-            
-            if UIApplication.shared.applicationState == .inactive{
-                print("Suspended")
-                self?.stop()
-            }else{
-                self?.delegate?.addLocation(sender: self!)
-            }
-            print("New address is Completed")
-
-        }
-        
-    }
-    
-   
     
     func convertLatLongToAddress1(latitude:Double,longitude:Double ,
                                   completion : @escaping ((String?) -> (Void))){
-
+        
         let geoCoder = CLGeocoder()
         let location = CLLocation(latitude: latitude, longitude: longitude)
         
@@ -166,46 +177,32 @@ class BackgroundLocationManager :NSObject, CLLocationManagerDelegate {
             placeMark = placemarks?[0]
             
             var addr = ""
-         
+            
             // Street address
-            if let street = placeMark.thoroughfare {
+            if let street = placeMark?.thoroughfare {
                 addr +=  street
             }
             // City
-            if let city = placeMark.locality {
+            if let city = placeMark?.locality {
                 addr += " - " + city
             }
             // State
-            if let state = placeMark.administrativeArea {
+            if let state = placeMark?.administrativeArea {
                 addr += " - " + state
             }
             // Zip code
-            if let zipCode = placeMark.postalCode {
+            if let zipCode = placeMark?.postalCode {
                 addr += " - " + String(describing: zipCode)
             }
             // Country
-            if let country = placeMark.country {
+            if let country = placeMark?.country {
                 addr += " - " + String(describing: country)
             }
             
             completion(addr)
         }
-
+        
     }
     
-    
-    func beginNewBackgroundTask(){
-        var previousTaskId = currentBgTaskId;
-        
-        currentBgTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: {
-        })
-        if let taskId = previousTaskId{
-            UIApplication.shared.endBackgroundTask(taskId)
-            previousTaskId = UIBackgroundTaskInvalid
-        }
-        timer = Timer.scheduledTimer(timeInterval: BackgroundLocationManager.BACKGROUND_TIMER, target: self, selector: #selector(self.restart), userInfo: nil, repeats: false)
-        
-        print(BackgroundLocationManager.BACKGROUND_TIMER)
-
-    }
 }
+
