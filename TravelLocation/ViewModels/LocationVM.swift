@@ -33,9 +33,9 @@ class LocationVM: NSObject {
         }
     }
     
-    var timestamp: Date {
+    var timestamp: String {
         get {
-            return self.location.timestamp! as Date
+            return DateFormat().formatDate(date: self.location.timestamp! )
         }
     }
     

@@ -14,6 +14,7 @@ class DateFormat {
         let date = date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yy HH:mm:ss"
+        dateFormatter.timeZone = TimeZone.current
         let dateString = dateFormatter.string(from: date as Date)
         return dateString
     }
