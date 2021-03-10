@@ -52,6 +52,9 @@ extension ViewController : AddLocationDelegate {
     func GetBackgroundProcess(){
         BackgroundLocationManager.instance.delegate = self
         BackgroundLocationManager.instance.start()
+        
+        self.locationViewModel?.getLocationData()
+        self.tableview.reloadData()
     }
     
 }
